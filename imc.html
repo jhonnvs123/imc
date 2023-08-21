@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora IMC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #main {
+            display: flex;
+            width: 80%;
+            max-width: 1200px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .column {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            
+        }
+        .column:last-child {
+            border-right: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #679ed4;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            color: #0056b3;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 90%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p {
+            font-weight: bold;
+            margin: 10px 0;
+            color: rgb(197, 127, 47);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div class="column">
+            <h1>Índice de Masa corporal</h1>
+            <p>El (IMC) es un número que se calcula con base en el peso y la estatura de la persona.</p>
+            <input type="number" id="altura" placeholder="Altura (m)">
+            <input type="number" id="masa" placeholder="Masa (kg)">
+            <button>Calcular IMC</button>
+            <p id="resultado"></p>
+            <img id="imagenResultado" src="default.png" alt="Resultado IMC">
+        </hr>
+        </div>
+        <div class="column">
+            <h1>Tabla Composición Corporal</h1>
+            <p>Clasificación del estado nutricional de acuerdo con el IMC</p>
+           
+          <table>
+                <tr>
+                    <th>Composición corporal</th>
+                    <th>Índice de masa corporal (IMC)</th>
+                </tr>
+                <tr>
+                    <td>Peso bajo o delgado </td>
+                    <td>Menor a 18.5</td>
+                </tr>
+                <tr>
+                    <td>Normal</td>
+                    <td>18.5 – 24.9</td>
+                </tr>
+                <tr>
+                    <td>Con Sobrepeso</td>
+                    <td>25.0 – 29.9</td>
+                </tr>
+                <tr>
+                    <td>Obesidad</td>
+                    <td>Más de 30.0</td>
+                </tr>
+            </table>
+            <img src="tabla.png" alt="tabla">
+            <button onclick="location.reload()">Volver a Calcular</button>
+        </div>
+
+           
+    </div>
+
+    <script>
+        const masaInput = document.querySelector('#masa');
+        const alturaInput = document.querySelector('#altura');
+        const button = document.querySelector('button');
+        const resultadoP = document.querySelector('#resultado');
+        const imagenResultado = document.querySelector('#imagenResultado');
+
+        button.addEventListener('click', () => {
+            const masa = parseFloat(masaInput.value);
+            const altura = parseFloat(alturaInput.value);
+
+            if (isNaN(masa) || isNaN(altura) || altura === 0) {
+                resultadoP.textContent = 'Por favor, ingresa valores válidos.';
+                imagenResultado.src = 'error.png';
+                return;
+            }
+
+            const imc = masa / (altura ** 2);
+            resultadoP.textContent = `Tu índice de masa corporal es ${imc.toFixed(2)}.`;
+
+            let mensaje = '';
+            let imagenSrc = '';
+
+            if (imc < 18.5) {
+                mensaje = 'Estás en el rango de peso insuficiente (delgado).';
+                imagenSrc = 'bajo_peso.png';
+            } else if (imc >= 18.5 && imc < 24.9) {
+                mensaje = 'Estás en el rango de peso normal (óptimo).';
+                imagenSrc = 'normal.png';
+            } else if (imc >= 25 && imc < 29.9) {
+                mensaje = 'Tienes sobrepeso.';
+                imagenSrc = 'sobrepeso.png';
+            } else {
+                mensaje = 'Tienes obesidad.';
+                imagenSrc = 'obesidad.png';
+            }
+
+            resultadoP.textContent += ' ' + mensaje;
+            imagenResultado.src = imagenSrc;
+        });
+    </script>
+</body>
+</html>
